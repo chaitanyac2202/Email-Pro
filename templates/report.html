@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-between align-center mb-4">
+    <div>
+        <h1>Campaign Report</h1>
+        <p class="subtitle">Delivery metrics and execution logs.</p>
+    </div>
+    <a href="{{ url_for('download_report') }}" class="btn btn-secondary">Download CSV</a>
+</div>
+
+{% if metrics %}
+<div class="grid-4 mb-4">
+    <div class="card metric-card">
+        <div class="metric-value" style="color: var(--text-main);">{{ metrics.total }}</div>
+        <div class="metric-label">Total Recipients</div>
+    </div>
+    <div class="card metric-card">
+        <div class="metric-value" style="color: var(--success);">{{ metrics.delivered }}</div>
+        <div class="metric-label">Successfully Sent</div>
+    </div>
+    <div class="card metric-card">
+        <div class="metric-value" style="color: var(--error);">{{ metrics.failed }}</div>
+        <div class="metric-label">Failed</div>
+    </div>
+    <div class="card metric-card">
+        <div class="metric-value" style="color: var(--primary);">{{ metrics.success_rate }}%</div>
+        <div class="metric-label">Delivery Rate</div>
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>Execution Log</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in results %}
+                <tr>
+                    <td>{{ log.email }}</td>
+                    <td>
+                        {% if 'Delivered' in log.status %}
+                            <span class="badge success">Delivered</span>
+                        {% else %}
+                            <span class="badge error">{{ log.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="metric-label">{{ log.timestamp }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center;">No logs available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

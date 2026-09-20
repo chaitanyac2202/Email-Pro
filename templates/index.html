@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="mb-4">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Upload your contact list to get started with your AI-powered campaign.</p>
+</header>
+
+<div class="card">
+    <h2>Import Contacts</h2>
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        <label for="file" class="dropzone" id="dropzone">
+            <div class="dropzone-icon">📄</div>
+            <p>Drag & drop your CSV file here or click to browse</p>
+            <p class="metric-label mt-4">Make sure your file contains an 'email' column.</p>
+            <input type="file" name="file" id="file" accept=".csv" style="display: none;">
+        </label>
+        <div id="file-name" class="mb-4" style="text-align: center; font-weight: 500;"></div>
+        <button type="submit" class="btn btn-full">Upload & Classify with AI</button>
+    </form>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file');
+    const fileName = document.getElementById('file-name');
+    
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            fileName.textContent = 'Selected: ' + e.target.files[0].name;
+        }
+    });
+</script>
+{% endblock %}

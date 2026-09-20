@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="mb-4">
+    <h1>Create Campaign</h1>
+    <p class="subtitle">Compose your email and select your target audience.</p>
+</header>
+
+<div class="card">
+    <form action="{{ url_for('send') }}" method="POST" enctype="multipart/form-data">
+        <div class="grid-2">
+            <div class="form-group">
+                <label for="audience">Target Audience</label>
+                <select name="audience" id="audience" required>
+                    <option value="All">All Contacts ({{ business_count + individual_count }})</option>
+                    <option value="Business">Business Contacts Only ({{ business_count }})</option>
+                    <option value="Individual">Individual Contacts Only ({{ individual_count }})</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="attachment">Attachment (Optional)</label>
+                <input type="file" name="attachment" id="attachment">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="subject">Email Subject</label>
+            <input type="text" name="subject" id="subject" placeholder="Enter an engaging subject line" required>
+        </div>
+
+        <div class="form-group">
+            <label for="body">Email Body (Supports plain text or HTML)</label>
+            <textarea name="body" id="body" placeholder="Write your message here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-full" onclick="this.innerHTML='Sending... Please wait';">Send Campaign</button>
+    </form>
+</div>
+{% endblock %}

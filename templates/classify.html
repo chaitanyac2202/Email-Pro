@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-between align-center mb-4">
+    <div>
+        <h1>Audience Insights</h1>
+        <p class="subtitle">AI automatically categorized your contacts.</p>
+    </div>
+    <a href="{{ url_for('send') }}" class="btn">Proceed to Campaign</a>
+</div>
+
+<div class="grid-2">
+    <!-- Business Contacts Card -->
+    <div class="card">
+        <div class="flex justify-between align-center mb-4">
+            <h2>Business Contacts</h2>
+            <span class="badge" style="font-size: 1rem;">{{ classified.get('Business', [])|length }}</span>
+        </div>
+        <p class="metric-label mb-4">Corporate and custom domain addresses.</p>
+        <div style="max-height: 300px; overflow-y: auto;">
+            {% for email in classified.get('Business', []) %}
+                <span class="badge">{{ email }}</span>
+            {% else %}
+                <p class="metric-label">No business contacts found.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Individual Contacts Card -->
+    <div class="card">
+        <div class="flex justify-between align-center mb-4">
+            <h2>Individual Contacts</h2>
+            <span class="badge" style="font-size: 1rem;">{{ classified.get('Individual', [])|length }}</span>
+        </div>
+        <p class="metric-label mb-4">Generic providers (Gmail, Yahoo, etc).</p>
+        <div style="max-height: 300px; overflow-y: auto;">
+            {% for email in classified.get('Individual', []) %}
+                <span class="badge">{{ email }}</span>
+            {% else %}
+                <p class="metric-label">No individual contacts found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
